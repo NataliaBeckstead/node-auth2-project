@@ -4,6 +4,7 @@ const secrets = require("../auth/secrets");
 
 module.exports = (req, res, next) => {
     const token = req.headers.authorization;
+    var grab;
 
     const secret = secrets.jwtSecret;
 
@@ -13,6 +14,7 @@ module.exports = (req, res, next) => {
                 res.status(401).json({ you: 'cannot pass!!'});
             } else {
                 req.decodedToken = decodedToken;
+                grab = decodedToken;
                 next();
             }
         });

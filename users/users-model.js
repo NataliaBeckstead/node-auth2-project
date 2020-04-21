@@ -9,12 +9,21 @@ module.exports = {
   findById,
 };
 
-function find() {
-  return db("users").select("id", "username", "department");
+
+function find(token) {
+  var grab;
+  jwt.verify(token, secrets.jwtSecret, (error, decodedToken) => {
+    grab = decodedToken;
+  })
+
+  return db("users")
+    .select("id", "username","department")
+    .where("department",grab.department)
+
 }
 
-function findBy(filter) {
-  return db("users").where(filter).select("id", "username", "department");
+function findBy(filter, select) {
+  return db("users").select(select).where(filter);
 }
 
 async function add(user) {
